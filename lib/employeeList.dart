@@ -40,14 +40,16 @@ class _EmployeeListState extends State<EmployeeList> {
         });
       }
     } catch (e) {
-      print('Error: $e');
+      if (kDebugMode) {
+        print('Error: $e');
+      }
     }
   }
 
 
   Future<void> postData() async {
-    const url = 'http://office.orangebd.com/api/';
-    Map<String, dynamic> data = {'key': '6d345600fd266f5905b98813517396ae'};
+    const url = '';
+    Map<String, dynamic> data = {};
 
     try {
       final response = await http.post(
@@ -68,15 +70,20 @@ class _EmployeeListState extends State<EmployeeList> {
         if (kDebugMode) {
           print('POST request failed with status: ${response.statusCode}');
         }
-        print('Error message: ${response.body}');
+        if (kDebugMode) {
+          print('Error message: ${response.body}');
+        }
       }
     } catch (e) {
-      print('Error: $e');
+      if (kDebugMode) {
+        print('Error: $e');
+      }
       await initializeData();
     }
   }
+
   Future<void> _clearOldData() async {
-    final db = await _database;
+    final db = _database;
     await db.delete('employees');
   }
 
@@ -108,7 +115,7 @@ class _EmployeeListState extends State<EmployeeList> {
   }
 
   Future<void> _storeDataInDatabase(List<EmployeeData> employeeList) async {
-    final db = await _database;
+    final db = _database;
     for (final employee in employeeList) {
       await db.insert('employees', employee.toJson(),
           conflictAlgorithm: ConflictAlgorithm.replace);
@@ -116,7 +123,7 @@ class _EmployeeListState extends State<EmployeeList> {
   }
 
   Future<List<EmployeeData>> _fetchDataFromDatabase() async {
-    final db = await _database;
+    final db = _database;
     final List<Map<String, dynamic>> maps = await db.query('employees');
     return List.generate(maps.length, (i) {
       return EmployeeData(name: maps[i]['name'],designation: maps[i]['designation']);
@@ -146,7 +153,9 @@ class _EmployeeListState extends State<EmployeeList> {
             itemCount: dataList.length,
             itemBuilder: (context, index) {
               final EmployeeData employee = dataList[index];
-              print('${dataList.length}');
+              if (kDebugMode) {
+                print('${dataList.length}');
+              }
               return Column(
                 children: [
                   Row(
@@ -183,12 +192,12 @@ class _EmployeeListState extends State<EmployeeList> {
                                       ),
                                     ),
                                   ]),
-                              child: CircleAvatar(
-                                child: Icon(Icons.person,size: 40,),
+                              child: const CircleAvatar(
                                 radius: 30,
+                                child: Icon(Icons.person,size: 40,),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Column(
@@ -196,7 +205,7 @@ class _EmployeeListState extends State<EmployeeList> {
                               CrossAxisAlignment
                                   .start,
                               children: [
-                                Container(
+                                SizedBox(
                                   width: MediaQuery.of(
                                       context)
                                       .size
@@ -214,17 +223,17 @@ class _EmployeeListState extends State<EmployeeList> {
                                     CrossAxisAlignment
                                         .start,
                                     children: [
-                                      Icon(
+                                      const Icon(
                                         Icons
                                             .description,
                                         color: Colors
                                             .grey,
                                         size: 18,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 4,
                                       ),
-                                      Container(
+                                      SizedBox(
                                         width: MediaQuery.of(
                                             context)
                                             .size
@@ -246,7 +255,7 @@ class _EmployeeListState extends State<EmployeeList> {
                       ),
                     ],
                   ),
-                  Divider(),
+                  const Divider(),
                 ],
               );
             }),
