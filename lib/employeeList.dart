@@ -48,8 +48,8 @@ class _EmployeeListState extends State<EmployeeList> {
 
 
   Future<void> postData() async {
-    const url = '';
-    Map<String, dynamic> data = {};
+    const url = 'http://office.orangebd.com/api/';
+    Map<String, dynamic> data = {'key': '6d345600fd266f5905b98813517396ae'};
 
     try {
       final response = await http.post(
@@ -153,9 +153,7 @@ class _EmployeeListState extends State<EmployeeList> {
             itemCount: dataList.length,
             itemBuilder: (context, index) {
               final EmployeeData employee = dataList[index];
-              if (kDebugMode) {
-                print('${dataList.length}');
-              }
+              bool isExpanded = false;
               return Column(
                 children: [
                   Row(
@@ -247,6 +245,18 @@ class _EmployeeListState extends State<EmployeeList> {
                                               12),
                                         ),
                                       ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            employee.isExpanded = !employee.isExpanded;
+                                          });
+                                        },
+                                        child: Icon(
+                                          employee.isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                          color: Colors.black54,
+                                          size: 30,
+                                        ),
+                                      ),
                                     ]),
                               ],
                             ),
@@ -255,6 +265,12 @@ class _EmployeeListState extends State<EmployeeList> {
                       ),
                     ],
                   ),
+                  if (employee.isExpanded)
+                    Column(
+                      children: [
+                        Text('Expanded Text'),
+                      ],
+                    ),
                   const Divider(),
                 ],
               );

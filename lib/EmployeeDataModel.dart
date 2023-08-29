@@ -7,6 +7,7 @@ class EmployeeData {
   String? designation;
   String? division;
   String? photo;
+  bool isExpanded;
 
   EmployeeData(
       {this.name,
@@ -16,17 +17,20 @@ class EmployeeData {
         this.department,
         this.designation,
         this.division,
-        this.photo});
+        this.photo,
+        this.isExpanded = false,});
 
-  EmployeeData.fromJson(Map<String, dynamic> json) {
-    name = json['Name'];
-    email = json['Email'];
-    mobile = json['Mobile'];
-    skype = json['Skype'];
-    department = json['Department'];
-    designation = json['Designation'];
-    division = json['Division'];
-    photo = json['Photo'];
+  factory EmployeeData.fromJson(Map<String, dynamic> json) {
+    return EmployeeData(
+      name: json['Name'] ?? '',
+      email: json['Email'] ?? '',
+      mobile: json['Mobile'] ?? '',
+      skype: json['Skype'] ?? '',
+      department: json['Department'] ?? '',
+      designation: json['Designation'] ?? '',
+      division: json['Division'] ?? '',
+      photo: json['Photo'] ?? '',
+    );
   }
 
   Map<String, dynamic> toJson() {
